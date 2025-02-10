@@ -1,0 +1,12 @@
+{
+    "token" : "",
+    "CLIENT_ID" : "", 
+    "SERVER_ID" : "",
+    "YOUTUBE_API_KEY":"",
+    "prompt" : "",
+    "addMap": [{ "name": "test", "fileLocation": "./test/test.mp4", "length": 60 }
+    ],
+    "normalAds": [{"name":"test","fileLocation":"./test/test2.mp4", "length":15}],
+    "intro": {"fileLocation":"./test/intro.mp3", "length": 7},
+    "outro": {"fileLocation":"./test/outro.mp3", "length": 7}
+}
