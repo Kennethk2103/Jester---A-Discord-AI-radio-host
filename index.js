@@ -1,3 +1,11 @@
+//Dear programmer,
+//When I wrote this code, only God and I understood what I was doing
+//Now, only God knows
+//So if you are done trying to 'optimize' this routine (and failed),
+//please increment the following counter as a warning to the next guy:
+//total_hours_wasted_here = 0
+
+
 
 const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, VoiceChannel, StringSelectMenuBuilder } = require('discord.js')
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
@@ -176,8 +184,12 @@ client.on('interactionCreate', (interaction) => {
         sendBotMessage(message).then((value) => {
             let sentence = interaction.user.displayName + " : " + message + "\n" + value.content;
             for (let i = 0; i < Math.ceil(sentence.length / 2000); i++) {
-                let functionToCall = (i===0) ? interaction.reply : interaction.channel.send
-                functionToCall(sentence.slice(2000 * (i), ((2000) * (i + 1))))
+                if(i === 0){
+                    interaction.reply(sentence.substring(i * 2000, Math.min((i + 1) * 2000, sentence.length)))
+                }
+                else{
+                    interaction.channel.send(sentence.substring(i * 2000, Math.min((i + 1) * 2000, sentence.length)))
+                }
             }
             if (inChat && !currentlyDoingSomethingPleaseDontCrash && !isPlayingSong && audioplayer) {
                 makeAudioFromMessage(sentence, (x) => 10 * x + 500).then(() => {
@@ -223,6 +235,7 @@ client.on('interactionCreate', (interaction) => {
         voiceConnection.disconnect();
         voiceConnection.destroy();
         audioplayer.stop();
+        audioplayer = null;
         interaction.reply("Disconnected from voice channel");
     }
     if (interaction.commandName == "play-audio") {
