@@ -22,7 +22,6 @@ const { error, time } = require('console');
 const fs = require('fs');
 const ytdl = require("@distube/ytdl-core");
 var search = require('youtube-search');
-const { channel } = require('diagnostics_channel');
 
 
 //todo test

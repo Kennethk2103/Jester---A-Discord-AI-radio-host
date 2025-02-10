@@ -17,7 +17,6 @@ const commands = [
             required:true
         }
     ],
-    permissionsRequired:[8]
   },
   {
     name: 'ping',
@@ -49,8 +48,6 @@ const commands = [
       }
       
   ],
-  permissionsRequired:[8]
-
   },
   {
     name: 'disconnect',
