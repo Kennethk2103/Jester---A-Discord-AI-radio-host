@@ -30,7 +30,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 
 var inChat = false;
 
-
+var talk = true;
 
 client.login(token);
 
@@ -71,10 +71,20 @@ client.on('interactionCreate', (interaction) => {
 
         const createMessageAndSend = async (message) => {
             try {
+                let sentEmpheral = false;
+                //this only exists to make sure user dosent get "application didnt reply in time" error for weaker hardware
+                const messageNotSentTimeOut = setTimeout(() =>{
+                    interaction.reply("Bot is currently working on your message", {ephemeral: true})
+                    sentEmpheral = true;
+                }, 2500)
+                clearTimeout(messageNotSentTimeOut)
+
                 let response = await makeMessageFromPrompt(message)
-                messageSplitter(response, interaction)
-                if (audioplayer) {
-                    const audioResponse = await makeAudioFromPrompt(response, "output.mp3")
+
+                messageSplitter(response, interaction, !sentEmpheral)
+
+                if (audioplayer && talk) {
+                    const audioResponse = await convertMessageToAudio(response)
                     audioplayer.play(createAudioResource("output.mp3"))
                 }
                 return true
@@ -102,6 +112,11 @@ client.on('interactionCreate', (interaction) => {
         audioplayer.stop();
         audioplayer = null;
         interaction.reply("Disconnected from voice channel");
+    }
+
+    if(interaction.commandName == "toggle-ai-readout"){
+        talk = !talk;
+        return interaction.reply("Toggled AI readout to " + talk)
     }
 
     if (interaction.commandName == "play-audio") {

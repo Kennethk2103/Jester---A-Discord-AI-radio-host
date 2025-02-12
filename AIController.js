@@ -43,7 +43,7 @@ const convertMessageToAudio = async (message, output = "output.mp3") => {
             if (code == 0) {
                 resolve(message.length);
             } else {
-                reject("Error in converting message to audio");
+                reject(new Error("Error in converting message to audio"));
             }
         });
         childPython.on('error', function (err) {

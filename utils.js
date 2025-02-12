@@ -35,10 +35,6 @@ class Timer {
     }
 }
  const messageSplitter  = (sentence, interaction, reply=true)=>{
-    if(sentence.length < 2000 && reply){
-        interaction.reply(sentence)
-        return
-    }
     for (let i = 0; i < Math.ceil(sentence.length / 2000); i++) {
         if(i === 0 && reply){
             interaction.reply(sentence.substring(i * 2000, Math.min((i + 1) * 2000, sentence.length)))

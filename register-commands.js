@@ -93,6 +93,10 @@ const commands = [
   {
     name:"toggle-custom-ads",
     description:"toggle custom ads on and off"
+  },
+  {
+    name:"toggle-ai-readout",
+    description:"toggle talk on and off"
   }
 
 ];

@@ -31,6 +31,9 @@ let savedNextVideoUrl = null;
 
 
 //length of AI message
+//used as a check to see if audio is done being processed
+//because if this not a promise anymore and the actual value
+//that means audio is done being made
 let AIMessageLength = null;
 
 let skipIntervalCheck = null;
@@ -52,7 +55,6 @@ const skipMacro = async () => {
     }
     if (AIMessageLength) await AIMessageLength
 
-    if (urlQueue.length == 0) channel.send("Queue is now empty")
 }
 
 
@@ -150,6 +152,10 @@ async function pause(interaction) {
     if (!audioPlayer) {
         return interaction.reply("No audio player to do command")
     }
+    if (!isPlayingSong) {
+        return interaction.reply("Cannot pause something if not playing song")
+    }
+
     playSomething = false;
     if (audioPlayer) {
         audioPlayer.pause()
@@ -167,6 +173,10 @@ async function play(interaction) {
     if (urlQueue.length === 0) {
         return interaction.reply("No videos in queue to play, please add a video to the queue")
     }
+    if(isPlayingSong){
+        return interaction.reply("Already playing something")
+    }
+
     playSomething = true;
     isPlayingSong = true;
     if (audioPlayer) {
