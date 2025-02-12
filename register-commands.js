@@ -24,18 +24,6 @@ const commands = [
     permissionsRequired:[8]
   },
   {
-    name: 'chatoff',
-    description: 'turns chat off',
-    permissionsRequired:[8]
-  },
-  {
-    name: 'chaton',
-    description: 'turns chat on',
-    permissionsRequired:[8]
-
-  },
-
-  {
     name:"join-voice-channel",
     description:'join voice channel',
     options: [
