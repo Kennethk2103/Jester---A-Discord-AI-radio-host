@@ -1,11 +1,3 @@
-//Dear programmer,
-//When I wrote this code, only God and I understood what I was doing
-//Now, only God knows
-//So if you are done trying to 'optimize' this routine (and failed),
-//please increment the following counter as a warning to the next guy:
-//total_hours_wasted_here = 0
-
-
 
 const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, VoiceChannel, StringSelectMenuBuilder } = require('discord.js')
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
