@@ -35,15 +35,7 @@ client.on('ready', (c) => {
 });
 
 
-process.on("SIGINT", () => {
-    if (getModel()) {
-        console.log("CLOSING UP SHOP")
-        getModel().dispose()
-    }
-    
 
-    process.exit()
-})
 
 
 client.on('messageCreate', (message) => {
@@ -52,6 +44,25 @@ client.on('messageCreate', (message) => {
 
 var voiceConnection = null;
 var audioplayer = null;
+
+process.on("SIGINT", () => {
+    if (getModel()) {
+        console.log("CLOSING UP SHOP")
+        getModel().dispose()
+    }
+    if (voiceConnection) {
+        voiceConnection.disconnect();
+        voiceConnection.destroy();
+        voiceConnection = null;
+    }
+    if (audioplayer) {
+        audioplayer.stop();
+        audioplayer = null;
+    }
+    
+
+    process.exit()
+})
 
 client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
