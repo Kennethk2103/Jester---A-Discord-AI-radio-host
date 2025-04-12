@@ -1,5 +1,5 @@
 
-const {CLIENT_ID, SERVER_ID, token} = require('./config.json');
+const {CLIENT_ID, SERVER_ID, token_discord} = require('./config.json');
 
 
 const { REST, Routes, ApplicationCommandOptionType, Options, ChannelType, PermissionFlagsBits } = require('discord.js');
@@ -23,18 +23,6 @@ const commands = [
     description: 'Pong!',
     permissionsRequired:[8]
   },
-  {
-    name: 'chatoff',
-    description: 'turns chat off',
-    permissionsRequired:[8]
-  },
-  {
-    name: 'chaton',
-    description: 'turns chat on',
-    permissionsRequired:[8]
-
-  },
-
   {
     name:"join-voice-channel",
     description:'join voice channel',
@@ -105,11 +93,15 @@ const commands = [
   {
     name:"toggle-custom-ads",
     description:"toggle custom ads on and off"
+  },
+  {
+    name:"toggle-ai-readout",
+    description:"toggle talk on and off"
   }
 
 ];
 
-const rest = new REST({ version: '10' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(token_discord);
 
 (async () => {
   try {
