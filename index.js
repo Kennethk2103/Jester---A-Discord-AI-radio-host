@@ -4,11 +4,11 @@ const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, V
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
 
 const { messageSplitter } = require('./utils')
-const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat } = require('./AIController')
+const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage, shutdownAi } = require('./AIController')
 
 const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./YoutubeController')
 
-const { CLIENT_ID, token_discord, SERVER_ID } = require('./config.json');
+const { CLIENT_ID, token_discord, SERVER_ID , moderationMode} = require('./config.json');
 
 //add map is for custom ads you want to play in the form
 // { name: "name of ad", fileLocation: "location of file", length: "length of ad in seconds" }
@@ -39,18 +39,37 @@ client.on('ready', (c) => {
 
 
 
-client.on('messageCreate', (message) => {
-    console.log(message);
+client.on('messageCreate', async (message) => {
+    
+    if(moderationMode){
+        if (message.author.id == CLIENT_ID) {
+            return
+        }
+        if (message.author.bot) {
+            return
+        }
+        if (message.content == null) {
+            return
+        }
+        let output = await  checkMessage(message.content)
+        if(!output?.safe){
+            console.log("Message is not safe")
+            console.log("Username " + message.author.username + " ID " + message.author.id)
+            console.log("Content " + message.content  + " ID " + message.id)
+            console.log("Reason " + output?.reason)
+        }
+        else{
+            console.log("Message is safe")
+        }
+
+    }
 });
 
 var voiceConnection = null;
 var audioplayer = null;
 
 process.on("SIGINT", () => {
-    if (getModel()) {
-        console.log("CLOSING UP SHOP")
-        getModel().dispose()
-    }
+    shutdownAi()
     if (voiceConnection) {
         voiceConnection.disconnect();
         voiceConnection.destroy();

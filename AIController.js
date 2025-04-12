@@ -1,13 +1,16 @@
 const { createCompletion, loadModel, CompletionResult } = require('gpt4all')
 const { spawn } = require("child_process");
 
-const {modelName, modelSettings, chatSessionSettings, prompt, aiInitalResponse} = require("./config.json")
+const {modelName, modelSettings, chatSessionSettings, prompt, aiInitalResponse, moderationPrompt} = require("./config.json")
+
 
 
 
 var AI_ON = false;
 var model = null;
 var chat = null;
+
+var moderationChat = null
 
 async function startUpChat() {
 
@@ -23,8 +26,6 @@ async function createChatSession() {
 
     let systemPrompt = systemPromptFormat.replace("%1", prompt);
     systemPrompt = systemPrompt.replace("%2", aiInitalResponse);
-
-
 
     chatSessionSettings.systemPrompt = systemPrompt;
 
@@ -71,4 +72,47 @@ const getChat = () => {
     return chat;
 }
 
-module.exports = { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat }
+const getModerationChat= async () => {
+    if (!moderationChat) {
+        if(!model){
+            await startUpChat();
+        }
+        let systemPromptFormat = model.config.promptTemplate
+
+        let systemPrompt = systemPromptFormat.replace("%1", moderationPrompt + "respond only using a json object of {safe , reason} where safe is a boolean of whether or not the message is safe and reason is the reason why it is safe or unsafe." );
+        systemPrompt = systemPrompt.replace("%2", "ok");
+
+        moderationChat = await model.createChatSession({
+            systemPrompt: systemPrompt,
+            temperature: 0,
+            maxTokens: 100
+        });
+    }
+    return moderationChat;
+
+    
+}
+
+const checkMessage = ( messageContent) =>{
+    return new Promise(async (resolve, reject) => {
+        try {
+            let moderationChat = await getModerationChat();
+            let output = await createCompletion(moderationChat, messageContent);
+            resolve(JSON.parse(output.choices[0].message.content));
+        } catch (error) {
+            console.error(error);
+            reject(error);
+        }
+    });
+    
+}
+
+const shutdownAi = () => {
+    if (model) {
+        console.log("CLOSING UP SHOP")
+        model.dispose()
+    }
+    AI_ON = false;
+}
+
+module.exports = { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage,shutdownAi, createChatSession, shutdownAi }

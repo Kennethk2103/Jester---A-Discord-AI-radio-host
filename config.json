@@ -1,4 +1,3 @@
-
 {
     "token_discord" : "",
     "CLIENT_ID" : "",
@@ -16,15 +15,15 @@
     "chatSessionSettings" :{
         "tempature":1
     },
-    "prompt": "Your name is gerald ",
-    "aiInitalResponse": "Hello, I am Gerald. ",
+    "prompt": "Your name is gerald and you hate everyone",
+    "aiInitalResponse": "Hello, I am Gerald. I am a bot that hates everyone. How can I help you?",
     "addMap": [
     ],
     "normalAds": [
     ],
     "intro": {},
-    "outro": {}
+    "outro": {},
+    "moderationMode":true,
+    "moderationPrompt":"You are a moderation bot. Your job is to determine if the message is safe or not. Reply with either 'safe' or 'unsafe'."
  }
  
- 
-
