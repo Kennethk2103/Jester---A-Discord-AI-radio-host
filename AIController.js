@@ -1,6 +1,9 @@
 const { createCompletion, loadModel, CompletionResult } = require('gpt4all')
 const { spawn } = require("child_process");
-const { prompt } = require('./config.json');
+
+const {modelName, modelSettings, chatSessionSettings, prompt, aiInitalResponse} = require("./config.json")
+
+
 
 var AI_ON = false;
 var model = null;
@@ -9,20 +12,24 @@ var chat = null;
 async function startUpChat() {
 
     console.log("in here")
-    model = await loadModel('Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf', {
-        verbose: true,
-        device: 'gpu',
-        modelConfigFile: "./models3.json",
-    });
-    await createChatSession(prompt)
+    model = await loadModel(modelName, modelSettings);
+    await createChatSession();
     AI_ON = true
 }
 
-async function createChatSession(chatSessionPrompt) {
-    chat = await model.createChatSession({
-        temperature: 1,
-        systemPrompt: `<|im_start|>system \n${chatSessionPrompt}<|im_end|>`,
-    });
+async function createChatSession() {
+
+    let systemPromptFormat = model.config.promptTemplate
+
+    let systemPrompt = systemPromptFormat.replace("%1", prompt);
+    systemPrompt = systemPrompt.replace("%2", aiInitalResponse);
+
+
+
+    chatSessionSettings.systemPrompt = systemPrompt;
+
+    chat = await model.createChatSession(chatSessionSettings);
+    console.log(chat)
 }
 
 const makeMessageFromPrompt = async (text) => {

@@ -112,13 +112,24 @@ async function addToQueue(interaction) {
 }
 
 async function searchAndAddToQueue(interaction) {
+
+
+
     const fun = async () => {
-        let searchResults = await search(interaction.options.get("query").value, opts)
+        let searchResults = ""
+        try{
+            searchResults = await search(interaction.options.get("query").value, opts)
+        }
+        catch (error) {
+            console.log(error)
+            return interaction.reply("Error searching for song, key invalid")
+        }
         const actionRow = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder().setCustomId("songSelect" + interaction.id).setPlaceholder("Select a song").addOptions(searchResults.results.map((x, i) => {
                 return { label: x.title, value: x.link, description: x.channelTitle }
             })).setMinValues(1).setMaxValues(1)
         )
+       
         const reply = await interaction.reply({ content: "```Select a song```", components: [actionRow] })
 
         const collector = reply.createMessageComponentCollector({
@@ -142,7 +153,6 @@ async function searchAndAddToQueue(interaction) {
             i.message.delete()
         })
     }
-
     fun()
 }
 
@@ -421,8 +431,9 @@ async function playYoutubeVideo() {
         skipIntervalCheck = null;
     }
 
-    isPlayingSong = false;
     pleaseSkip = false;
+    isPlayingSong = false;
+
 }
 
 module.exports = {

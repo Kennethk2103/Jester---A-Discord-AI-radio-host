@@ -1,11 +1,29 @@
+
 {
-    "token" : "",
-    "CLIENT_ID" : "", 
+    "token_discord" : "",
+    "CLIENT_ID" : "",
     "SERVER_ID" : "",
     "YOUTUBE_API_KEY":"",
-    "prompt" : "",
-    "addMap": null,
-    "normalAds": null,
-    "intro": null,
-    "outro": null
-}
+    "modelName" :"Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf",
+    "modelSettings" : {
+        "verbose": true,
+        "useGPU": true,
+        "modelConfigFile" :  "./models3.json",
+        "device": "gpu",
+        "allowDownload": true,
+        "nCtx": 8000
+    },
+    "chatSessionSettings" :{
+        "tempature":1
+    },
+    "prompt": "Your name is gerald ",
+    "aiInitalResponse": "Hello, I am Gerald. ",
+    "addMap": [
+    ],
+    "normalAds": [
+    ],
+    "intro": {},
+    "outro": {}
+ }
+ 
+ 

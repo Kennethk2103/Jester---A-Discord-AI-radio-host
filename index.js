@@ -1,11 +1,5 @@
-//Dear programmer,
-//When I wrote this code, only God and I understood what I was doing
-//Now, only God knows
-//So if you are done trying to 'optimize' this routine (and failed),
-//please increment the following counter as a warning to the next guy:
-//total_hours_wasted_here = 0
 
-const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, VoiceChannel, StringSelectMenuBuilder } = require('discord.js')
+const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, VoiceChannel, StringSelectMenuBuilder, time } = require('discord.js')
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
 
 const { messageSplitter } = require('./utils')
@@ -13,7 +7,7 @@ const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFrom
 
 const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./YoutubeController')
 
-const { CLIENT_ID, token, SERVER_ID } = require('./config.json');
+const { CLIENT_ID, token_discord, SERVER_ID } = require('./config.json');
 
 //add map is for custom ads you want to play in the form
 // { name: "name of ad", fileLocation: "location of file", length: "length of ad in seconds" }
@@ -23,16 +17,16 @@ const { CLIENT_ID, token, SERVER_ID } = require('./config.json');
 
 const { joinVoiceChannel, createAudioPlayer, createAudioResource, PlayerSubscription, VoiceConnection } = require('@discordjs/voice')
 
-const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.MessageContent, IntentsBitField.Flags.GuildVoiceStates] });
+const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.MessageContent, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.GuildModeration] });
 
-const rest = new REST({ version: '10' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(token_discord);
 
 
 var inChat = false;
 
 var talk = true;
 
-client.login(token);
+client.login(token_discord);
 
 
 client.on('ready', (c) => {
@@ -41,18 +35,19 @@ client.on('ready', (c) => {
 });
 
 
-process.on("SIGTERM", () => {
-    if (model) {
+process.on("SIGINT", () => {
+    if (getModel()) {
         console.log("CLOSING UP SHOP")
-        getModel().close()
+        getModel().dispose()
     }
+    
+
     process.exit()
 })
 
 
 client.on('messageCreate', (message) => {
-    //console.log(message);
-
+    console.log(message);
 });
 
 var voiceConnection = null;
@@ -74,14 +69,17 @@ client.on('interactionCreate', (interaction) => {
                 let sentEmpheral = false;
                 //this only exists to make sure user dosent get "application didnt reply in time" error for weaker hardware
                 const messageNotSentTimeOut = setTimeout(() =>{
-                    interaction.reply("Bot is currently working on your message", {ephemeral: true})
+                    interaction.reply({content : "Bot is currently working on your message", ephemeral: true })
                     sentEmpheral = true;
                 }, 2500)
-                clearTimeout(messageNotSentTimeOut)
 
-                let response = await makeMessageFromPrompt(message)
+                const response = await makeMessageFromPrompt(message)
+                clearInterval(messageNotSentTimeOut)
+                let returnMessage = interaction.user.username + ": " + message + "\n" + response
 
-                messageSplitter(response, interaction, !sentEmpheral)
+
+                messageSplitter(returnMessage, interaction, !sentEmpheral)
+                clearInterval(messageNotSentTimeOut)
 
                 if (audioplayer && talk) {
                     const audioResponse = await convertMessageToAudio(response)
