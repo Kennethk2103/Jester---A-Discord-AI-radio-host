@@ -5,7 +5,7 @@ const makeImage = async (prompt , interaction) =>{
         // Spawn the Python script
         interaction.reply({content: "Generating image, please wait...", ephemeral: true});
 
-        const pythonProcess = spawn("python3", ["src/AI/test.py", prompt], {
+        const pythonProcess = spawn("python3", ["src/AI/test.py", `"${prompt}"`], {
             shell: true, // Use shell to execute the command
             stdio: 'pipe' // Use pipe to capture output
         });
