@@ -4,11 +4,11 @@ const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, V
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
 
 const { messageSplitter } = require('./utils')
-const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage, shutdownAi } = require('./AIController')
+const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage, shutdownAi } = require('./AI/AIController')
 
-const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./YoutubeController')
+const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./radio/YoutubeController')
 
-const { CLIENT_ID, token_discord, SERVER_ID , moderationMode} = require('./config.json');
+const { CLIENT_ID, token_discord, SERVER_ID , moderationMode} = require('../config.json');
 
 //add map is for custom ads you want to play in the form
 // { name: "name of ad", fileLocation: "location of file", length: "length of ad in seconds" }
@@ -22,6 +22,7 @@ const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitFi
 
 const rest = new REST({ version: '10' }).setToken(token_discord);
 
+const { makeImage } = require('./AI/imagegen');
 
 var inChat = false;
 
@@ -85,6 +86,7 @@ process.on("SIGINT", () => {
 })
 
 client.on('interactionCreate', (interaction) => {
+    console.log("Interaction received: " + interaction)
     if (!interaction.isChatInputCommand()) return;
     //if interaction is slash commad
 
@@ -185,6 +187,14 @@ client.on('interactionCreate', (interaction) => {
 
     if (interaction.commandName == "toggle-custom-ads") {
         return toggleCustomAds(interaction)
+    }
+
+    if( interaction.commandName == "make-image") {
+        const prompt = interaction.options.getString("prompt");
+        if (!prompt) {
+            return interaction.reply({content: "Please provide a prompt for the image generation.", ephemeral: true});
+        }
+        return makeImage(prompt, interaction);
     }
 
 });

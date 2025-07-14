@@ -140,3 +140,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 config.json
+config.json
+config.json

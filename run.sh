@@ -1,4 +1,4 @@
 #!/bin/bash
 
-node register-commands.js
-node index.js
+node ./src/register-commands.js
+node ./src/index.js
