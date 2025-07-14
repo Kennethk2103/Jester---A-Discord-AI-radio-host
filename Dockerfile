@@ -14,6 +14,7 @@ RUN npm install
 
 RUN pip install edge-tts
 
+RUN pip install diffusers invisible_watermark transformers accelerate safetensors torch
 
 COPY . .
 

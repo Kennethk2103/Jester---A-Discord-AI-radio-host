@@ -97,6 +97,18 @@ const commands = [
   {
     name:"toggle-ai-readout",
     description:"toggle talk on and off"
+  },
+  {
+    name:"make-image",
+    description:"make an image from a prompt",
+    options: [
+      {
+        name: "prompt", 
+        description: "The prompt for the image generation",
+        type: ApplicationCommandOptionType.String,
+        required: true
+      }
+    ]
   }
 
 ];
