@@ -1,5 +1,5 @@
 
-const {CLIENT_ID, SERVER_ID, token_discord} = require('./config.json');
+const {CLIENT_ID, SERVER_ID, token_discord} = require('../config.json');
 
 
 const { REST, Routes, ApplicationCommandOptionType, Options, ChannelType, PermissionFlagsBits } = require('discord.js');

@@ -11,6 +11,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.17.0",
     "@distube/ytdl-core": "^4.15.8",
+    "@nuclearplayer/ytdl-core": "^4.16.13",
     "discord.js": "^14.15.3",
     "gpt4all": "^4.0.0",
     "libsodium-wrappers": "^0.7.14",

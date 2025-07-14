@@ -1,9 +1,9 @@
-const ytdl = require("@distube/ytdl-core");
+const ytdl = require("@nuclearplayer/ytdl-core");
 const search = require('youtube-search');
 const fs = require('fs');
-const { YOUTUBE_API_KEY, addMap, normalAds, intro, outro } = require('./config.json');
-const { makeAudioFromPrompt } = require('./AIController')
-const { setAudioTimer, getTimer, setTimer } = require('./utils')
+const { YOUTUBE_API_KEY, addMap, normalAds, intro, outro } = require('../../config.json');
+const { makeAudioFromPrompt } = require('../AI/AIController')
+const { setAudioTimer, getTimer, setTimer } = require('../utils')
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType , StringSelectMenuBuilder} = require('discord.js');
 
 

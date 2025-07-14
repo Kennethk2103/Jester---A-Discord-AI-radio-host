@@ -4,11 +4,11 @@ const { REST, Client, IntentsBitField, Routes, Activity, ActivityType, italic, V
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
 
 const { messageSplitter } = require('./utils')
-const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage, shutdownAi } = require('./AIController')
+const { startUpChat, makeMessageFromPrompt, convertMessageToAudio, makeAudioFromPrompt, getModel, getChat, checkMessage, shutdownAi } = require('./AI/AIController')
 
-const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./YoutubeController')
+const { play, skip, pause, addToQueue, skipNext, getSongQueue, setaudioPlayer, toggleCustomAds, toggleRadioHost, toggleRegularAds, searchAndAddToQueue, setChannel } = require('./radio/YoutubeController')
 
-const { CLIENT_ID, token_discord, SERVER_ID , moderationMode} = require('./config.json');
+const { CLIENT_ID, token_discord, SERVER_ID , moderationMode} = require('../config.json');
 
 //add map is for custom ads you want to play in the form
 // { name: "name of ad", fileLocation: "location of file", length: "length of ad in seconds" }
@@ -85,6 +85,7 @@ process.on("SIGINT", () => {
 })
 
 client.on('interactionCreate', (interaction) => {
+    console.log("Interaction received: " + interaction)
     if (!interaction.isChatInputCommand()) return;
     //if interaction is slash commad
 

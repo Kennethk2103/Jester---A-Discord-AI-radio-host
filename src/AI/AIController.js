@@ -1,7 +1,7 @@
 const { createCompletion, loadModel, CompletionResult } = require('gpt4all')
 const { spawn } = require("child_process");
 
-const {modelName, modelSettings, chatSessionSettings, prompt, aiInitalResponse, moderationPrompt} = require("./config.json")
+const {modelName, modelSettings, chatSessionSettings, prompt, aiInitalResponse, moderationPrompt} = require("../../config.json")
 
 
 
