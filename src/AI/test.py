@@ -10,14 +10,9 @@ pipe.enable_model_cpu_offload()
 
 ##get arg
 prompt = sys.argv[1]
+print(f"Prompt: {prompt}")
 
 
 images = pipe(prompt=prompt).images[0]
 
 images.save("./output.png")
-
-##print current space
-print(os.getcwd())
-
-##print path
-print(os.path.abspath("./output.png"))

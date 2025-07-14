@@ -190,7 +190,8 @@ client.on('interactionCreate', (interaction) => {
     }
 
     if( interaction.commandName == "make-image") {
-        const prompt = interaction.options.getString("prompt");
+        const prompt = interaction.options.get("prompt")?.value;
+        
         if (!prompt) {
             return interaction.reply({content: "Please provide a prompt for the image generation.", ephemeral: true});
         }

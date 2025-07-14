@@ -29,7 +29,7 @@ async function createChatSession() {
 
     chatSessionSettings.systemPrompt = systemPrompt;
 
-    chat = await model.createChatSession(chatSessionSettings);
+    chat = await model.createChatSession(chatSessionSettings)
     console.log(chat)
 }
 
