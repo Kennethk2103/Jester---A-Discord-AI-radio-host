@@ -1,12 +1,9 @@
 Jester --- A discord AI radio host
 
-REQUIREMENTS TO RUN - 
-edge-tts - https://github.com/rany2/edge-tts
-
 To get an Youtube API key
 https://developers.google.com/youtube/v3/getting-started
 
-To run the bot just do ./run.sh
+just need to run in docker container with gpu pass through
 
 
 ##ADDING CUSTOM ADS

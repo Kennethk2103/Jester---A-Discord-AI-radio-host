@@ -22,7 +22,7 @@ const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitFi
 
 const rest = new REST({ version: '10' }).setToken(token_discord);
 
-const { makeImage } = require('./AI/imagegen');
+const { makeImage } = require('./AI/AiImagehandler');
 
 var inChat = false;
 
@@ -191,7 +191,7 @@ client.on('interactionCreate', (interaction) => {
 
     if( interaction.commandName == "make-image") {
         const prompt = interaction.options.get("prompt")?.value;
-        
+
         if (!prompt) {
             return interaction.reply({content: "Please provide a prompt for the image generation.", ephemeral: true});
         }
@@ -199,6 +199,7 @@ client.on('interactionCreate', (interaction) => {
     }
 
 });
+
 
 
 
